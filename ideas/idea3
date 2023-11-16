@@ -1,0 +1,26 @@
+vsv : diriction de l'air en fonction de la vitesse du moteur 
+
+
+détéction des anomalies :
+
+- utiliser le score 
+- voir les espérances anormales en fonction de la phase de vol 
+
+OU : 
+trouver un comportement type de l'avion et voir les écarts au comportement type
+avec tube de confiance ?
+
+usure du moteur :
+lisser l'egt (on a une marge => on cherche à augmenter la marge)
+=> plus c'est bas, plus c'est chaud
+
+
+=> on peut détecter la réparation => croissance de la marge egt 
+=> enlever la croissance pour eviter les réparations
+=> aligner les données 
+=> obtenir une droite pour un moteur en milieu de vie 
+=> voir si on obtient un polynome pour un moteur nouveau ou en fin de vie => péhonomène de rodage
+
+
+
+

@@ -1,0 +1,66 @@
+faire un tube de confiance 
+
+faire un module perso pour l'analyse de données
+
+
+faire un fork, git branch à la toolbow tabata
+
+travail sur l'usure de performance 
+
+lire le projet de thomas binet pour plus de data
+
+
+
+ce qui peut être étudié
+
+pour un filtre :
+
+hptacc : dilatation du cartère
+
+on mesure la dépression 
+puis explosion exponentielle du capteur lors du blocage 
+
+analyse vibratoire 
+
+analyse de performance : 
+identifier l'endroit où il y a des pb 
+
+
+
+
+
+cf visual mining : etienne côme et lacaille 
+
+algo pouvant être utiliser 
+- lasso 
+- l'autre quadratique 
+=> selectionner certianes variables cf cours 
+
+
+données de contexte : le reste : on peut prendre des relatoin physique en plus
+
+IDEES POUR DU LISSAGE ADAPTATIF : 
+si la phase change : il y a un saut : faire un lissage, qui quand il y un changement de phase, recommence le lissage
+EGTmax vs température exterieure et le N1 => grosse dépendance => il faut vraiement lisser pour voir un phénomène de dents de scies dans les données 
+
+carte de kohonnen  ?
+
+
+idées : résidu du corespeed après normalisation 
+
+donnée de santé N2 FF PS3 T3 et EGT
+
+
+
+
+VITESSE DE ROATION DE L'ARBRE VS ENERGIE VIBRATOIRE => IDENTIFIER LES COMPORTEMENTS EXTREMES !! SUPER INTÉRESSANTS 
+
+
+
+
+
+
+IDEES au démarrage
+
+faire deux cluster en fonction de la temperature de démarrage ? 
+=> les aubes sont plus en moins dilatées
