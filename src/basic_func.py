@@ -8,7 +8,7 @@ import dask.dataframe as dd
 from statsmodels.formula.api import ols
 import re
 
-def lire_hdf_dask(nom_fichier, repertoire= '/home/valentin/Documents/Cours/MACS/MACS3/madane/data/data_extracted/'):
+def lire_hdf_dask(nom_fichier, repertoire= 'C:/Users/felix/PycharmProjects/pythonProject1/MACS3-Statistiques-Descriptives-TDs/data/archive/'):
     """
     Charge un fichier HDF5 dans un DataFrame Dask.
     
@@ -22,7 +22,7 @@ def lire_hdf_dask(nom_fichier, repertoire= '/home/valentin/Documents/Cours/MACS/
     Retour:
     - ddf: DataFrame Dask
     """
-    repertoire_dask = '/home/valentin/Documents/Cours/MACS/MACS3/madane/data/data_dask/'
+    repertoire_dask = 'C:/Users/felix/PycharmProjects/pythonProject1/MACS3-Statistiques-Descriptives-TDs/data/data_dask'
     
     # Vérifiez si le répertoire dask existe; sinon, créez-le
     if not os.path.exists(repertoire_dask):

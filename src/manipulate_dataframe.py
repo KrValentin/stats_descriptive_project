@@ -64,3 +64,15 @@ def generate_df_reg (all_reg):
         df_reg['IC1_'+param] = IC_1[:,i]
 
     return df_reg
+
+def eliminate_records(df):
+    #renvoie True si records est a éliminer
+    alt_min=df['ALT [ft]'].min()
+    alt_max=df['ALT [ft]'].max()
+    alt_range=alt_max-alt_min
+    bol=False
+    
+    if alt_range<15000:
+        bol=True
+    return bol
+
