@@ -70,7 +70,7 @@ mais en croisière doit être fermé
 
 TCASE 
 
-TLA : position du levier dans le coqpit : décision du pilote avec un délai 
+TLA : position du levier dans le cockpit : décision du pilote avec un délai 
 => a voir le délai entre le changement de mouvement du levier et la vitesse du moteur / temp
 => donne une info sur la dynamique du moteur
 
