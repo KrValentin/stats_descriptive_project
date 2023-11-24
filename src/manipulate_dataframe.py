@@ -9,9 +9,9 @@ from statsmodels.formula.api import ols
 import re
 
 
-def normalize(df):
-    l = ['NAIV_1 [bool]', 'NAIV_2 [bool]','PRV_1 [bool]', 'PRV_2 [bool]']
-    df=  df.drop(columns = l)
+def normalize(df, l = ['NAIV_1 [bool]', 'NAIV_2 [bool]','PRV_1 [bool]', 'PRV_2 [bool]']):
+    if len(l)!=0 :
+        df=  df.drop(columns = l)
     newname = []
     for col in df.columns :
         newname.append(re.sub(r' \[.*?\]', '', col))
