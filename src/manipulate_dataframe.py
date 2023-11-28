@@ -9,10 +9,6 @@ __version__ = '1.0'
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import os, glob
-import scipy
-import dask.dataframe as dd
 from statsmodels.formula.api import ols
 from statsmodels.stats.stattools import durbin_watson
 import re
