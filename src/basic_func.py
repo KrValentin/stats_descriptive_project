@@ -1,15 +1,24 @@
+# -*- coding: utf-8 -*-
+"""
+Module src - fonctions de bases pour le projet - projet de statistiques descriptives MACS3
+@author: Kraemer Valentin 
+"""
+__date__ = "2023-11-27"
+__version__ = '1.0'
+
+
+
 import pandas as pd
-import numpy as np
-import xarray as xr
-import matplotlib.pyplot as plt
 import os, glob
-import scipy
 import dask.dataframe as dd
-from statsmodels.formula.api import ols
-import re
+
 
 def lire_hdf_dask(nom_fichier, repertoire= '/home/valentin/Documents/Cours/MACS/MACS3/madane/data/data_extracted/'):
     """
+    lire hdf_dask function 
+    @author A.Madane 
+    modified by Kramer Valentin 
+
     Charge un fichier HDF5 dans un DataFrame Dask.
     
     Si le fichier HDF5 n'est pas partitionnable et qu'il n'y a pas déjà une version partitionnée,
