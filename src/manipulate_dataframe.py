@@ -16,6 +16,7 @@ def normalize(df, l = ['NAIV_1 [bool]', 'NAIV_2 [bool]','PRV_1 [bool]', 'PRV_2 [
     for col in df.columns :
         newname.append(re.sub(r' \[.*?\]', '', col))
     X = df.values
+    #on pouvait reprendre la normalisation de sklearn
     X_norm = (X - np.mean(X,axis = 0))/np.std(X, axis = 0)
     df_norm = pd.DataFrame(data = X_norm, columns=newname, index= df.index)
 
@@ -76,3 +77,33 @@ def eliminate_records(df):
         bol=True
     return bol
 
+def deriv_glissante(df):
+    
+    #on cree une fonction qui prend un data frame qui l'augment de la valeur dy et qui renvoit  un nouveau dataframe contenant que le monté 
+    #ATTENTION LA FONCTION PRENDS EN ENTREE DES DONNEES NORMALISEE
+    
+    dy=np.zeros(len(df))
+    
+    #on fait une moyenne glissante pour éviter d'être sensible aux bruit. En effet pour le cacul de dérivée le bruit 
+    #fausse trés rapidement les données
+    y = df['ALT'].rolling(window = 20).mean()
+    I = range(y.index[0], y.index[-1],20)
+    #calcul de la derivée
+    dy[0:len(I)-1] = y[I[1:]].values- y[I[:-1]].values
+    #creation d'une nouvelle colonne dans le dataframe
+    df['dy']=dy
+    #on selectionne le dataframe où les dérivées sont plus grande que 0.01 (la montée)
+    df_monte=df[df['dy']>0.01]
+    I4=np.zeros(len(df_monte))
+    #on verifie qu' avec un shift des données on retombe bien sur les mêmes indices cela permet d'éviter 
+    # de prendre en compte des valeurs qui ne serait pas dans la phase de la montée 
+    #Attention cette façon de faire est lié aux cas d'un vol d'avion (l'hypothèse admise est que l'avion ne monte qu'une fois)
+    #Et s'il existe plus de 6 données anormale consécutives alors elles seront prise en compte 
+    
+    I4[5:]=df_monte.index[5:]==(df_monte.index+5)[:-5]
+    I4[:5]=1
+    df_monte2=df_monte[I4==1]
+    
+
+
+    return [df_monte2]
