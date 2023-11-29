@@ -13,12 +13,12 @@ import os, glob
 import dask.dataframe as dd
 
 
+
 def lire_hdf_dask(nom_fichier, repertoire= '/home/valentin/Documents/Cours/MACS/MACS3/madane/data/data_extracted/'):
     """
     lire hdf_dask function 
     @author A.Madane 
     modified by Kramer Valentin 
-
     Charge un fichier HDF5 dans un DataFrame Dask.
     
     Si le fichier HDF5 n'est pas partitionnable et qu'il n'y a pas déjà une version partitionnée,
@@ -31,7 +31,7 @@ def lire_hdf_dask(nom_fichier, repertoire= '/home/valentin/Documents/Cours/MACS/
     Retour:
     - ddf: DataFrame Dask
     """
-    repertoire_dask = '/home/valentin/Documents/Cours/MACS/MACS3/madane/data/data_dask/'
+    repertoire_dask = repertoire+ 'data_dask'
     
     # Vérifiez si le répertoire dask existe; sinon, créez-le
     if not os.path.exists(repertoire_dask):
@@ -62,6 +62,7 @@ def lire_hdf_dask(nom_fichier, repertoire= '/home/valentin/Documents/Cours/MACS/
                     h.put(key, store[key], format='table')
             print(f"Lecture du fichier de données: '{nom_fichier[:-3]}_dask.h5'")
             return dd.read_hdf(fichier_partitionne, '*')
+
 
 
 def extraire_noms_variables(expression):
@@ -100,5 +101,5 @@ def interval_conf(param, df, alpha) :
     """
     import scipy.stats as st
     data = df[param]
-    Interval = st.norm.interval(alpha=alpha, loc=data.mean(), scale=data.std())
+    Interval = st.norm.interval(alpha=alpha, loc=data.mean(), scale=st.sem(data.values))
     return Interval

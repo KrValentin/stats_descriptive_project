@@ -17,7 +17,7 @@ from src import lire_hdf_dask, interval_conf
 from src import afficher_significativite, afficher_coeff 
 
 # manipulate_dataframe 
-from src import regression, generate_df_reg, angle_analysis
+from src import regression, generate_df_reg, angle_analysis, normalize
 
 
 ###
@@ -66,7 +66,7 @@ def select_ddf(ddf):
     return ddf.partitions[I==False]
 
 
-def analyse_flight(file,data_dir): 
+def analyse_flight(file,data_dir, window = 1): 
     """
     analyse_flight function
     @author : Kraemer Valentin 
@@ -74,6 +74,7 @@ def analyse_flight(file,data_dir):
     Input : 
         file : nom du fichier.h5 de données dask d'un avion 
         data_dir : le repertoire dans lequel est stocké la donnée extracted (cf lire_hdf_dask de basic_func.py)
+        window  : la fenetre glissante que l'on applique pour l'affichage de l'évolution des coefficients - default : pas de fenetre  
     
     Ouput : 
         affichage graphique du R2, nombre d'observations, des coeeficients de regression 
@@ -98,8 +99,53 @@ def analyse_flight(file,data_dir):
     print(f"La valeur moyenne de R^2 est de {df_reg['R2'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('R2', df_reg, alpha = 0.95)}")
     print(f"La valeur moyenne du test de Durbin Waston est de {df_reg['Durbin_Waston'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('Durbin_Waston', df_reg, alpha = 0.95)}")
 
-    afficher_coeff(df_reg, norm = False, window=30)
+    afficher_coeff(df_reg, norm = False, window=window)
     print(f"La valeur moyenne du coeff  est de {df_reg['coeff_theta_vitesse'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('coeff_theta_vitesse', df_reg, alpha = 0.95)}")
     print(f"La valeur moyenne du coeff  est de {df_reg['coeff_Intercept'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('coeff_Intercept', df_reg, alpha = 0.95)}")
 
     return df_reg
+
+def analyse_flight_norm(file,data_dir, window = 1): 
+    """
+    analyse_flight_norm function
+    @author : Kraemer Valentin 
+
+    IDEM que analyse flight mais normalisé
+
+    Input : 
+        file : nom du fichier.h5 de données dask d'un avion 
+        data_dir : le repertoire dans lequel est stocké la donnée extracted (cf lire_hdf_dask de basic_func.py)
+        window  : la fenetre glissante que l'on applique pour l'affichage de l'évolution des coefficients - default : pas de fenetre 
+    
+    Ouput : 
+        affichage graphique du R2, nombre d'observations, des coeeficients de regression 
+        df_reg : le dataframe de regression 
+    """
+    # selection du dask.dataframe non corrompu
+    ddf = select_ddf(lire_hdf_dask(file, repertoire= data_dir))
+
+    # nouveau dask dataframe sur les angles
+    ddf_study= ddf.map_partitions(lambda df : angle_analysis(df))
+
+    # normalisation du jeu de données 
+    ddf_study_norm = ddf_study.map_partitions(lambda df : normalize(df,  l =[]))
+
+    # regression lineaire sur chaque vols
+    formula = 'theta_levier~theta_vitesse'
+    regression_dict = ddf_study_norm.map_partitions(lambda df : regression(df, formula)).compute()
+
+    # collecte de la liste des dictionnaires sous la forme d'un dataframe 
+    df_reg = generate_df_reg(regression_dict)
+
+
+    # affichage graphique 
+    afficher_significativite(df_reg)
+    print(f"La valeur moyenne de R^2 est de {df_reg['R2'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('R2', df_reg, alpha = 0.95)}")
+    print(f"La valeur moyenne du test de Durbin Waston est de {df_reg['Durbin_Waston'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('Durbin_Waston', df_reg, alpha = 0.95)}")
+
+    afficher_coeff(df_reg, norm = True, window = window)
+    print(f"La valeur moyenne du coeff  est de {df_reg['coeff_theta_vitesse'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('coeff_theta_vitesse', df_reg, alpha = 0.95)}")
+    print(f"La valeur moyenne du coeff  est de {df_reg['coeff_Intercept'].mean()} pour un intervalle de confiance à 0.95 de {interval_conf('coeff_Intercept', df_reg, alpha = 0.95)}")
+
+    return df_reg
+
