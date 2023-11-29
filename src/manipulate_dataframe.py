@@ -12,6 +12,7 @@ import numpy as np
 from statsmodels.formula.api import ols
 from statsmodels.stats.stattools import durbin_watson
 import re
+from src import extraire_noms_variables
 
 
 ###
@@ -155,11 +156,20 @@ def regression(df, formula) :
             - les intervalles de confiances de chq prm  (Intervals)
 
     """
-    df2 = df.copy()
+    products = extraire_noms_variables(formula)
+    df2 = df[products].copy()
     import re 
     for col in df.columns :
         newname = re.sub(r' \[.*?\]', '', col)
         df2.rename(columns={col:newname}, inplace=True)
+
+    if len(df)<2 :
+        r2 = np.nan, 
+        pvals = np.nan*np.zeros((len(products)))
+        IC = np.nan*np.zeros((len(products)))
+        n_obs = np.nan
+        params_list = np.nan*np.zeros((len(products)))
+        params_list = products
     model = ols(formula, data = df2).fit()
     r2 = model.rsquared
     pvals = model.pvalues
