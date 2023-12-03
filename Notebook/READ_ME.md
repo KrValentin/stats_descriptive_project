@@ -1,6 +1,6 @@
 Authors :  Kraemer Valentin et HUSSON Félix
-Date   :  3 dec 2023
-Desc   :  Description du livrable 
+Date    :  3 dec 2023
+Desc    :  Description du livrable 
 
 
 Le livrable comprend les notebooks suivant :
@@ -14,13 +14,13 @@ Le livrable comprend les notebooks suivant :
 
     - vkr_data_fleet_analysis         .ipynb : analyse de toute la flotte d'avion 
 
-    -Felix_clustering_valentin       .ipynb : poursuite de l'analyse de Valentin (clustering et ACP) 
+    - Felix_clustering_valentin       .ipynb : poursuite de l'analyse de Valentin (clustering et ACP) 
     
-    -EGT_felix                         .ipynb : Tentative de retrouver les résultats du TD: croissance de l'EGT max 
+    - EGT_felix                       .ipynb : Tentative de retrouver les résultats du TD: croissance de l'EGT max 
 
-    -Felix002                           .ipynb : Comparaison entre étude globale et études sur la phase de la monté (Corrélation et ACP )
+    - Felix002                        .ipynb : Comparaison entre étude globale et études sur la phase de la monté (Corrélation et ACP )
 
-    -Analyse_Avions                     .ipynb : On reprends l'analyse sur le coefficient de corrélation sur TOUT les avions
+    - Analyse_Avions                  .ipynb : On reprends l'analyse sur le coefficient de corrélation sur TOUT les avions
 
 Ces notebooks sont à lire dans l'ordre ci-dessus pour une meilleure compréhension. 
 
