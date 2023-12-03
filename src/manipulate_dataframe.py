@@ -9,13 +9,10 @@ __version__ = '1.0'
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import os, glob
-import scipy
-import dask.dataframe as dd
 from statsmodels.formula.api import ols
 from statsmodels.stats.stattools import durbin_watson
 import re
+from src import extraire_noms_variables
 
 
 ###
@@ -160,11 +157,20 @@ def regression(df, formula) :
             - les intervalles de confiances de chq prm  (Intervals)
 
     """
-    df2 = df.copy()
+    products = extraire_noms_variables(formula)
+    df2 = df[products].copy()
     import re 
     for col in df.columns :
         newname = re.sub(r' \[.*?\]', '', col)
         df2.rename(columns={col:newname}, inplace=True)
+
+    if len(df)<2 :
+        r2 = np.nan, 
+        pvals = np.nan*np.zeros((len(products)))
+        IC = np.nan*np.zeros((len(products)))
+        n_obs = np.nan
+        params_list = np.nan*np.zeros((len(products)))
+        params_list = products
     model = ols(formula, data = df2).fit()
     r2 = model.rsquared
     pvals = model.pvalues
@@ -219,7 +225,7 @@ def generate_df_reg (all_reg):
 
 
 def eliminate_records(df):
-        """
+    """
     @author : Husson Félix 
    eliminate_records function 
 
@@ -240,6 +246,7 @@ def eliminate_records(df):
     
     if alt_range<15000:
         bol=True
+        
     return bol
 
 def deriv_glissante(df):       
@@ -247,7 +254,7 @@ def deriv_glissante(df):
     @author : Husson Félix 
    deriv_glissante function 
 
-    desc : on cree une fonction qui prend un data frame qui l'augmente de la valeur dy et qui renvoit  un nouveau dataframe contenant que la montée 
+    desc : on cree une fonction qui prend un data frame qui l'augmente de la valeur dy en ft/s et qui renvoit  un nouveau dataframe contenant que la montée 
 
     Input : 
         #ATTENTION LA FONCTION PRENDS EN ENTREE DES DONNEES NORMALISEE d'un vol d'avion

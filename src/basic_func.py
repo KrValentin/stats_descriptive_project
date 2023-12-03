@@ -13,12 +13,16 @@ import os, glob
 import dask.dataframe as dd
 
 
+
 def lire_hdf_dask(nom_fichier, repertoire= 'C:/Users/felix/PycharmProjects/pythonProject1/MACS3-Statistiques-Descriptives-TDs/data/archive/'):
+
+
+#def lire_hdf_dask(nom_fichier, repertoire= '/home/valentin/Documents/Cours/MACS/MACS3/madane/data/data_extracted/'):
+
     """
     lire hdf_dask function 
     @author A.Madane 
     modified by Kramer Valentin 
-
     Charge un fichier HDF5 dans un DataFrame Dask.
     
     Si le fichier HDF5 n'est pas partitionnable et qu'il n'y a pas déjà une version partitionnée,
@@ -31,7 +35,11 @@ def lire_hdf_dask(nom_fichier, repertoire= 'C:/Users/felix/PycharmProjects/pytho
     Retour:
     - ddf: DataFrame Dask
     """
+
     repertoire_dask = 'C:/Users/felix/PycharmProjects/pythonProject1/MACS3-Statistiques-Descriptives-TDs/data/data_dask'
+
+    repertoire_dask = repertoire+ 'data_dask'
+
     
     # Vérifiez si le répertoire dask existe; sinon, créez-le
     if not os.path.exists(repertoire_dask):
@@ -63,3 +71,43 @@ def lire_hdf_dask(nom_fichier, repertoire= 'C:/Users/felix/PycharmProjects/pytho
             print(f"Lecture du fichier de données: '{nom_fichier[:-3]}_dask.h5'")
             return dd.read_hdf(fichier_partitionne, '*')
 
+
+
+def extraire_noms_variables(expression):
+    """
+    extractaire_noms_variables 
+    @author : chatGPT 
+
+    permet de séparer les différents noms de variables d'un string de type formula = 'var1 ~ var2 + var3'
+
+    Input : 
+        expression : string à analyser 
+
+    Output 
+        liste des variables utilisées
+    """
+    import re
+    # Utilisation d'une expression régulière pour extraire les noms des variables
+    pattern = re.compile(r'\b\w+\b')
+    noms_variables = pattern.findall(expression)
+    return noms_variables
+
+def interval_conf(param, df, alpha) :
+    """
+    interval_conf function 
+    realisation rapide d'un intervalle de confiance à partir d'un dataframe
+    @author : Kraemer Valentin 
+
+    Input :
+        param : le paramètre du dataframe pour lequel on désire un IC normal
+        df    : le dataframe où est stocké la donnée
+        alpha : le niveau de confiance souhaité
+
+    Output : 
+        Interval : l'intervalle de confiance au niveau alpha du parametre param
+
+    """
+    import scipy.stats as st
+    data = df[param]
+    Interval = st.norm.interval(alpha=alpha, loc=data.mean(), scale=st.sem(data.values))
+    return Interval
